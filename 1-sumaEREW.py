@@ -1,7 +1,7 @@
 '''Programa 1: SUMA EREW
 Estudiante: José Juan García Romero'''
 
-import threading
+from multiprocessing import Process
 import math
 import time
 import os
