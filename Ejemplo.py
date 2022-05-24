@@ -15,7 +15,7 @@ class Producer(multiprocessing.Process):
             item = random.randint(0, 256)
             self.queue.put(item)
             print("Proceso Productor : item %d agregado a la cola %s" % (item, self.name))
-            time.sleep(1)
+            time.sleep(1),
             print("El tamaño de la cola es %s" % self.queue.qsize())
 
 class Consumer(multiprocessing.Process):
