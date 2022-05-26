@@ -1,7 +1,7 @@
 '''Programa 1: SUMA EREW
 Estudiante: José Juan García Romero'''
 
-from multiprocessing import Process, Queue
+from multiprocessing import Process
 import multiprocessing
 import math
 import time
@@ -11,6 +11,7 @@ from unicodedata import name
 def executeMultProc(i,j,A):
     if (((2*j)%(math.pow(2,i))) == 0):
         A[2*j] = A[2*j] + A[((2*j)-((int) (math.pow(2,i-1))))]
+    #time.sleep(1)
     
 
 def print_titulo():
