@@ -1,14 +1,28 @@
 '''Programa 1: SUMA EREW
 Estudiante: José Juan García Romero'''
 
-import threading
+from __future__ import print_function
+from multiprocessing import Process
+import multiprocessing
 import time
+import os
 
-def thread01(a, i, odd, even):
+def print_titulo():
+    for i in range (1,46):
+        print('-',end='')
+    print('\n')
+
+def cls_screen():
+    if os.name == "windows" or os.name == "nt" or os.name == "dos" or os.name == "ce":
+        os.system("cls")
+    else:
+        os.system("clear")
+
+def process_01(a, i, odd, even):
     a[2 * i] = odd[i]
     a[2 * i + 1] = even[i]
 
-def thread02(a, i, Laux):
+def process_02(a, i, Laux):
     if (a[2 * i + 1] < a[2 * i]):
         a[2 * i + 1], a[2 * i] = interchange(a[2 * i + 1], a[2 * i])
 
@@ -39,7 +53,10 @@ def oddEvenMergePRAM(a):
 def main():
     a = [16, 22, 35, 40, 55, 66, 70, 85, 15, 18, 23, 53, 60, 69, 72, 78]
 
-    print()
+    cls_screen()
+    print_titulo()
+    print('\tPrograma 6. ORDENAMIENTO EREW\n')
+    print_titulo()
 
     print('Arreglo original: ', a)
 
@@ -47,16 +64,26 @@ def main():
     odd, even = oddEvenMergePRAM(a)
     n = len(a)
 
+    print()
+
     for i in range(0, int(n / 2)):
-        thread = threading.Thread(target=thread01, args=(a, i, even, odd))
-        thread.start()
-        thread.join()
+        p1 = multiprocessing.Process(target=process_01, args=(a, i, even, odd))
+        p1.run()
+        p1.start()
+        p1.join()
+        print("Revisar Proceso 1: ",p1.is_alive)
 
     lCopy = a.copy()
+
+    print()
+
     for i in range(0, int(n / 2)):
-        thread = threading.Thread(target=thread02, args=(a, i, lCopy))
-        thread.start()
-        thread.join()
+        p2 = multiprocessing.Process(target=process_02, args=(a, i, lCopy))
+        p2.run()
+        p2.start()
+        p2.join()
+        print("Revisar Proceso 2: ",p2.is_alive)
+
     print()
     print('Ordenando el arreglo')
     print()
@@ -67,8 +94,10 @@ def main():
     print()
     print('Arreglo Ordenado: \n', a)
     print()
-    time.sleep(2)
+    #time.sleep(2)
 
+    input('\nPresiona cualquier tecla para salir...')
+    cls_screen()
 
 if __name__ == '__main__':
     main()
