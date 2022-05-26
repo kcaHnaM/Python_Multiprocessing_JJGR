@@ -2,7 +2,8 @@
 Estudiante: José Juan García Romero'''
 
 import math
-import  threading
+from multiprocessing import Process
+import multiprocessing
 
 def ordCRCW(a, c, n, b):
     for i in range(n):
@@ -21,16 +22,19 @@ def ordCRCW(a, c, n, b):
     print("Paso 03: ", b)
     print()
     print("El arreglo ordenado es:", b)
+    
 def main():
     a = [95,10,6,15]
     b = [0,0,0,0]
     c = [9,9,9,9]
-    n = 4
+    n = len(a)
 
     print("El arreglo es: ", a)
-    thread = threading.Thread(ordCRCW(a,c,n,b))
-    thread.start()
-    thread.join()
+    p = multiprocessing.Process(ordCRCW(a,c,n,b))
+    p.run()
+    p.start()
+    p.join()
+    print("Revisar Proceso: ",p.is_alive)
 
 if __name__ == '__main__':
     main()
