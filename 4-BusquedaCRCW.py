@@ -1,7 +1,10 @@
 '''Programa 2: SUMA CREW
 Estudiante: José Juan García Romero'''
 
-import threading
+from concurrent.futures import process
+from multiprocessing import Process
+import multiprocessing
+from statistics import multimode
 import time
 import os
 
@@ -16,16 +19,16 @@ def cls_screen():
     else:
         os.system("clear")
 
-def hilo1(Win,i):
+def p1(Win,i):
     Win[i]=0
     
-def hilo2(L,Win,i,j):
+def p2(L,Win,i,j):
     if(L[i]>L[j]):
         Win[i]=1
     else:
         Win[j]=1
     
-def hilo3(Win,i,ind):
+def p3(Win,i,ind):
     if(Win[i]==0):
         ind[0]=i
 
@@ -58,11 +61,16 @@ def main():
     i=0
     n=len(L)
 
+    
+
+
     while(i<n):
         if(i>=0):
-            t = threading.Thread(target=hilo1, args = (Win,i))
-            t.start()
-            t.join()
+            p = multiprocessing.Process(target=p1, args = (Win,i))
+            p.run()
+            p.start()
+            p.join()
+            print("Revisar Proceso: ",p.is_alive)
         i=i+1
     i=0
     j=i+1
@@ -74,9 +82,11 @@ def main():
     while(j<n):
         if(i<j):
             if(i>=0):
-                t = threading.Thread(target=hilo2, args = (L,Win,i,j))
-                t.start()
-                t.join()
+                p = multiprocessing.Process(target=p2, args = (L,Win,i,j))
+                p.run()
+                p.start()
+                p.join()
+                print("Revisar Proceso: ",p.is_alive)
         i=i+1
         j=j+1
     i=0
@@ -87,9 +97,11 @@ def main():
 
     while(i<n):
         if(i>=0):
-            t = threading.Thread(target=hilo3, args = (Win,i,ind))
-            t.start()
-            t.join()
+            p = multiprocessing.Process(target=p3, args = (Win,i,ind))
+            p.run()
+            p.start()
+            p.join()
+            print("Revisar Proceso: ",p.is_alive)
             i=i+1
 
     print ('\n\t\tPROCESO 3:\n')
