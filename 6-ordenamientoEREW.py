@@ -1,4 +1,4 @@
-'''Programa 1: SUMA EREW
+'''Programa 6: ORDENAMIENTO CRCW
 Estudiante: José Juan García Romero'''
 
 from __future__ import print_function
