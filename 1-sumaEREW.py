@@ -6,6 +6,7 @@ import multiprocessing
 import math
 import time
 import os
+from unicodedata import name
 
 def executeMultProc(i,j,A):
     if (((2*j)%(math.pow(2,i))) == 0):
@@ -45,6 +46,7 @@ def main():
             p.run()
             p.start()
             p.join()
+            print("Revisar Proceso: ",p.is_alive)
 
         print(A[1:a+1])
     
