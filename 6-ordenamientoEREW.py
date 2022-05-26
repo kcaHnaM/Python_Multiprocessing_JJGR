@@ -26,6 +26,9 @@ def process_02(a, i, Laux):
     if (a[2 * i + 1] < a[2 * i]):
         a[2 * i + 1], a[2 * i] = interchange(a[2 * i + 1], a[2 * i])
 
+def margesort():
+    
+
 def interchange(b, c):
     aux = b
     b = c

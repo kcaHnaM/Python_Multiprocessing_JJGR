@@ -19,18 +19,19 @@ def cls_screen():
     else:
         os.system("clear")
 
-def p1(Win,i):
+def process_01(Win,i):
     Win[i]=0
     
-def p2(L,Win,i,j):
+def process_02(L,Win,i,j):
     if(L[i]>L[j]):
         Win[i]=1
     else:
         Win[j]=1
     
-def p3(Win,i,ind):
+def process_03(Win,i,ind):
     if(Win[i]==0):
         ind[0]=i
+
 
 
 def main():

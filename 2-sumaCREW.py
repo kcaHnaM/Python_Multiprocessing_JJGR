@@ -7,9 +7,8 @@ import math
 import time
 import os
 
-def process(i,j,A):
-    if (((2*j) % (math.pow(2, i))) == 0):
-        A[2*j] = A[2*j] + A[((2*j)-((int)(math.pow(2, i-1))))]
+def process(i,j,A,aux):
+    aux[j] = A[j] + A[(j-(int)(math.pow(2, i-1)))]
     #time.sleep(1)
 
 def print_titulo():
@@ -25,6 +24,8 @@ def cls_screen():
 
 def main():
     A = [0,5,2,10,1,8,12,7,3]
+    aux = A.copy()
+
     n = len(A) - 1
     j = 1
     log = (int)(math.log(n,2))
@@ -37,14 +38,16 @@ def main():
     print_titulo()
 
     print(A[1:len(A)])
+
     for i in range(1, log + 1):
-        for j in range ((int)(n/2)+1):
-            p = multiprocessing.Process(target=process, args=(i,j,A))
+        for j in range ((int)(math.pow(2,i-1) + 1),n + 1):
+            p = multiprocessing.Process(target=process, args=(i,j,A,aux))
             processes.append(p)
             p.run()
             p.start()
             p.join()
             print("Revisar Proceso: ",p.is_alive)
+        A = aux.copy()
         print(A[1:n+1])
 
     print('\nSuma Total: ',A[n])
