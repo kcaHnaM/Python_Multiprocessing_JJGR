@@ -1,6 +1,7 @@
 '''Programa 1: SUMA EREW
 Estudiante: José Juan García Romero'''
 
+from concurrent.futures import process
 import multiprocessing
 import math
 import time
@@ -34,11 +35,15 @@ def main():
 
     a = len(A)-1
     log = int(math.log(a,2))
+
+    processes = []
+
     for i in range(1,log+1):
         for j in range(1,(int)(a/2)+1):
-            multproc = multiprocessing.Process(target=executeMultProc,args=(i,j,A))
-            multproc.start()
-        
+            p = multiprocessing.Process(target=executeMultProc,args=(i,j,A))
+            processes.append(p)
+            p.start()
+            p.join()
 
         print(A[1:a+1])
     
