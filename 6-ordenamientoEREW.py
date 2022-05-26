@@ -4,7 +4,6 @@ Estudiante: José Juan García Romero'''
 from __future__ import print_function
 from multiprocessing import Process
 import multiprocessing
-import time
 import os
 
 def print_titulo():
@@ -18,84 +17,113 @@ def cls_screen():
     else:
         os.system("clear")
 
-def process_01(a, i, odd, even):
-    a[2 * i] = odd[i]
-    a[2 * i + 1] = even[i]
+def mergeSortPRAM(L):
+    n = len(L)
+    L1_aux = L[:int(n/2)]
+    L2_aux = L[int(n/2):]
+    Process_jobs = []
 
-def process_02(a, i, Laux):
-    if (a[2 * i + 1] < a[2 * i]):
-        a[2 * i + 1], a[2 * i] = interchange(a[2 * i + 1], a[2 * i])
+    if n >= 2:
+        p = multiprocessing.Process(target=mergeSortPRAM, args=(L1_aux,))
+        Process_jobs.append(p)
+        p.run()
+        p.start()
+        p.join()
+        print("Revisar Proceso 1: ",p.is_alive)
 
-def margesort():
-    
+        p = multiprocessing.Process(target=mergeSortPRAM, args=(L2_aux,))
+        Process_jobs.append(p)
+        p.run()
+        p.start()
+        p.join()
+        print("Revisar Proceso 2: ",p.is_alive)
 
-def interchange(b, c):
-    aux = b
-    b = c
-    c = aux
-    return b, c
+        for i in range(0, n):
+            if i < int(n / 2):
+                L[i] = L1_aux[i]
+            else:
+                L[i] = L2_aux[i - int(n / 2)]
 
-def oddEvenSplit(a):
-    n = len(a)
-    aux = int(n / 2)
-    b = a[0:aux]
-    c = a[aux:n]
-    return (b, c)
+        oddEvenMergePRAM(L)
 
-def oddEvenMergePRAM(a):
-    n = len(a)
+def oddEvenMergePRAM(L):
+    n = len(L)
+    Process_jobs = []
+
     if n == 2:
-        if (a[0] > a[1]):
-            a[0], a[1] = interchange(a[0], a[1])
+        if L[0] > L[1]:
+            interchange(L, 0, 1)
     else:
-        odd, even = oddEvenSplit(a)
-        oddEvenMergePRAM(odd)
-        oddEvenMergePRAM(even)
-        return (odd, even)
+        odd, even = oddEvenSplit(L)
+
+        p = multiprocessing.Process(target=oddEvenMergePRAM, args=(odd,))
+        Process_jobs.append(p)
+        p.run()
+        p.start()
+        p.join()
+        print("Revisar Proceso 3: ",p.is_alive)
+
+        p = multiprocessing.Process(target=oddEvenMergePRAM, args=(even,))
+        Process_jobs.append(p)
+        p.run()
+        p.start()
+        p.join()
+        print("Revisar Proceso 4: ",p.is_alive)
+
+        for i in range(1, int(n/2)+1):
+            p = multiprocessing.Process(target=executeMerge1, args=(i, odd, even, L,))
+            Process_jobs.append(p)
+            p.run()
+            p.start()
+            p.join()
+            print("Revisar Proceso 5: ",p.is_alive)
+
+        for i in range(1, int(n / 2)):
+            p = multiprocessing.Process(target=executeMerge2, args=(i, L,))
+            Process_jobs.append(p)
+            p.run()
+            p.start()
+            p.join()
+            print("Revisar Proceso 6: ",p.is_alive)
+
+def executeMerge1(i, odd, even, L):
+    L[2 * i - 2] = odd[i - 1]
+    L[2 * i - 1] = even[i - 1]
+
+def executeMerge2(i, L):
+    if L[2*i - 1] > L[2*i]:
+        interchange(L, 2*i - 1, 2*i)
+
+
+def interchange(Array, index_a, index_b):
+    aux = Array[index_a]
+    Array[index_a] = Array[index_b]
+    Array[index_b] = aux
+
+
+def oddEvenSplit(array):
+    odd = array[::2]
+    even = array[1::2]
+    return odd, even
+
+
+def copyArray(A, B):
+    for i in range(0, len(A)):
+        A[i] = B[i]
 
 def main():
-    a = [16, 22, 35, 40, 55, 66, 70, 85, 15, 18, 23, 53, 60, 69, 72, 78]
+    L = [16, 22, 35, 40, 55, 66, 70, 85, 15, 18, 23, 53, 60, 69, 72, 78]
 
     cls_screen()
     print_titulo()
     print('\tPrograma 6. ORDENAMIENTO EREW\n')
     print_titulo()
 
-    print('Arreglo original: ', a)
+    print('Arreglo original: ', L,"\n\n")
 
-    oddEvenMergePRAM(a)
-    odd, even = oddEvenMergePRAM(a)
-    n = len(a)
+    mergeSortPRAM(L)
 
-    print()
-
-    for i in range(0, int(n / 2)):
-        p1 = multiprocessing.Process(target=process_01, args=(a, i, even, odd))
-        p1.run()
-        p1.start()
-        p1.join()
-        print("Revisar Proceso 1: ",p1.is_alive)
-
-    lCopy = a.copy()
-
-    print()
-
-    for i in range(0, int(n / 2)):
-        p2 = multiprocessing.Process(target=process_02, args=(a, i, lCopy))
-        p2.run()
-        p2.start()
-        p2.join()
-        print("Revisar Proceso 2: ",p2.is_alive)
-
-    print()
-    print('Ordenando el arreglo')
-    print()
-    print(oddEvenMergePRAM(even))
-    print(oddEvenMergePRAM(odd))
-    print(oddEvenSplit(a))
-    print(oddEvenMergePRAM(a))
-    print()
-    print('Arreglo Ordenado: \n', a)
+    print('\n\nArreglo Ordenado: ', L)
     print()
     #time.sleep(2)
 

@@ -55,7 +55,7 @@ def minCRCW(L):
         p.run()
         p.start()
         p.join()
-        print("Revisar Proceso: ",p.is_alive)
+        print("Revisar Proceso 2: ",p.is_alive)
     
     processes = []
 
@@ -66,7 +66,7 @@ def minCRCW(L):
         p.run()
         p.start()
         p.join()
-        print("Revisar Proceso: ",p.is_alive)
+        print("Revisar Proceso 3: ",p.is_alive)
     
     processes = []
 
