@@ -48,7 +48,6 @@ def main():
             p.start()
             p.join()
             print("Revisar Proceso: ",p.is_alive)
-
         print(A[1:a+1])
     
     print('\nSuma total: ',A[a])

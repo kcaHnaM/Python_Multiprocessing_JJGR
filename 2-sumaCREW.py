@@ -8,9 +8,8 @@ import time
 import os
 
 def process(i,j,A):
-    if(((int)(math.pow(2,i-1)) + 1) <= j):
-        A[j] = A[j] + A[j - ((int)(math.pow(2,i-1)))]
-        print(A[1:9])
+    if (((2*j) % (math.pow(2, i))) == 0):
+        A[2*j] = A[2*j] + A[((2*j)-((int)(math.pow(2, i-1))))]
     #time.sleep(1)
 
 def print_titulo():
@@ -37,19 +36,16 @@ def main():
     print('\tPrograma 2. SUMA CREW\n')
     print_titulo()
 
-    print(A[1:n+1])
-
+    print(A[1:len(A)])
     for i in range(1, log + 1):
-        while j <= n:
+        for j in range ((int)(n/2)+1):
             p = multiprocessing.Process(target=process, args=(i,j,A))
             processes.append(p)
             p.run()
             p.start()
             p.join()
             print("Revisar Proceso: ",p.is_alive)
-            j = j + 1
-
-    print(A[1:n+1])
+        print(A[1:n+1])
 
     print('\nSuma Total: ',A[n])
 
