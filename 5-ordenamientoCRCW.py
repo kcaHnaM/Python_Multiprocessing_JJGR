@@ -16,41 +16,73 @@ def cls_screen():
     else:
         os.system("clear")
 
-def ordCRCW(a, c, n, b):
-    for i in range(n):
-        c[i] = 0
-    print("Paso 01: ", c)
+def process_01(win, i):
+    win[i] = 0
 
+def process_02(L, win, i, j):
+    if(L[i] > L[j]):
+        win[i] = win[i] + 1
+    else:
+        win[j] = win[j] + 1
 
-    for i in range(n):
-        for j in range(n):
-            if a[i] > a [j]:
-                c[i] = c[i] + 1
-    print("Paso 02: ", c)
+def process_03(L, win, i, aux):
+    L[win[i]] = aux[i]
 
-    for i in  range (n):
-        b [c[i]] = a[i]
-    print("Paso 03: ", b)
-    print()
-    print("El arreglo ordenado es:", b)
+def ordeamiento(L):
+    n = len(L) - 1
+    win = [None for _ in range(n + 1)]
+    win[0] = 0
+
+    processes = []
+
+    for i in range(1, n + 1):
+        p1 = multiprocessing.Process(target = process_01, args = (win, i))
+        processes.append(p1)
+        p1.run()
+        p1.start()
+        p1.join()
+        print("Revisar Proceso: ",p1.is_alive)
+
+    processes = []
+
+    for i in range(1, n + 1):
+        k = 0
+        for j in range(i, n + 1):
+            p2 = multiprocessing.Process(target = process_02, args = (L, win, k, j))
+            processes.append(p2)
+            p2.run()
+            p2.start()
+            k += 1
+            p2.join()
+            print("Revisar Proceso: ",p2.is_alive)
+    
+    processes = []
+
+    aux = L.copy()
+
+    for i in range(0, n + 1):
+        p3 = multiprocessing.Process(target = process_03, args = (L, win, i, aux))
+        processes.append(p3)
+        p3.run()
+        p3.start()
+        p3.join()
+        print("Revisar Proceso: ",p3.is_alive)
+
+    print('\nOrdenamiento...\n')
+    print('Win: ',win,'\n')
+    print('Vector ordenado: ',L)
 
 def main():
-    a = [95,10,6,15]
-    b = [0,0,0,0]
-    c = [9,9,9,9]
-    n = len(a)
+    L = [95, 10, 6, 15]
 
     cls_screen()
     print_titulo()
     print('\tPrograma 5. ORDENAMIENTO CRCW\n')
     print_titulo()
 
-    print("El arreglo es: ", a)
-    p = multiprocessing.Process(ordCRCW(a,c,n,b))
-    p.run()
-    p.start()
-    p.join()
-    print("Revisar Proceso: ",p.is_alive)
+    print("Arreglo original: ", L)
+    
+    ordeamiento(L)
 
     input('\nPresiona cualquier tecla para salir...')
     cls_screen()
