@@ -29,87 +29,65 @@ def process_02(L,Win,i,j):
         Win[j]=1
     
 def process_03(Win,i,ind):
-    if(Win[i]==0):
-        ind[0]=i
+    if(Win[i] == 0):
+        ind[0] = i
 
+def minCRCW(L):
+    n = len(L) - 1
+    Win = [None for _ in range(n+1)]
+    Win[0] = 0
 
+    processes = []
+
+    for i in range(1, n + 1):
+        p = multiprocessing.Process(target=process_01, args = (Win,i))
+        p.run()
+        p.start()
+        p.join()
+        print("Revisar Proceso 1: ",p.is_alive)
+    
+    processes = []
+
+    ind = [0]
+    for j in range(1, n + 1):
+        i = j - 1
+        p = multiprocessing.Process(target=process_02, args = (L,Win,i,j))
+        p.run()
+        p.start()
+        p.join()
+        print("Revisar Proceso: ",p.is_alive)
+    
+    processes = []
+
+    ind = [0]
+
+    for i in range(1, n + 1):
+        p = multiprocessing.Process(target=process_03, args = (Win,i,ind))
+        p.run()
+        p.start()
+        p.join()
+        print("Revisar Proceso: ",p.is_alive)
+    
+    processes = []
+
+    print('\n', Win)
+
+    print('\nindice minimo es:', ind, '\nEl número más pequeño es:', L[ind[0]])
+    return L[ind[0]]
 
 def main():
-    L=[]
-    
-    i=1
-    Win=[1,1,1,1,1,1,1,1,1,1,1,1,1]
-    ind=[1000000000000000000000000]
 
-
-    cls_screen()
-    print_titulo()
-    print('\tPrograma 4. Busqueda CRCW\n')
-    print_titulo()
-
-    x=int(input('Numero de datos a ingresar: '))
-    print('\n')
-
-    for i in range (x):
-        datos=int(input('Valor: '))
-        L.append(datos)
+    L=[95,10,6,15]    
     
     cls_screen()
     print_titulo()
     print('\tPrograma 4. Busqueda CRCW\n')
     print_titulo()
     
-    i=0
-    n=len(L)
-
-    
-
-
-    while(i<n):
-        if(i>=0):
-            p = multiprocessing.Process(target=p1, args = (Win,i))
-            p.run()
-            p.start()
-            p.join()
-            print("Revisar Proceso: ",p.is_alive)
-        i=i+1
-    i=0
-    j=i+1
-
-    print ('\t\tPROCESO 1:\n')
     print ('Vector original: ', L)
-    print ('\n',Win[:x])
 
-    while(j<n):
-        if(i<j):
-            if(i>=0):
-                p = multiprocessing.Process(target=p2, args = (L,Win,i,j))
-                p.run()
-                p.start()
-                p.join()
-                print("Revisar Proceso: ",p.is_alive)
-        i=i+1
-        j=j+1
-    i=0
-    print ('\n\t\tPROCESO 2:\n')
-    print (Win[:x])
-
-
-
-    while(i<n):
-        if(i>=0):
-            p = multiprocessing.Process(target=p3, args = (Win,i,ind))
-            p.run()
-            p.start()
-            p.join()
-            print("Revisar Proceso: ",p.is_alive)
-            i=i+1
-
-    print ('\n\t\tPROCESO 3:\n')
-    print ('Señalando el valor minimo con un cero en el vector 0\n\n', Win[:x])
-
-            
-    print ('\n\nEl valor minimo es:  ', L[ind[0]])
+    print ('\n\t\tBusqueda:\n')
+    minCRCW(L)
 
     input('\nPresiona cualquier tecla para salir...')
     cls_screen()
