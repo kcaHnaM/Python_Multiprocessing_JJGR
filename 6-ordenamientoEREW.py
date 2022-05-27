@@ -1,4 +1,4 @@
-'''Programa 6: ORDENAMIENTO CRCW
+'''Programa 6: ORDENAMIENTO EREW
 Estudiante: José Juan García Romero'''
 
 from __future__ import print_function

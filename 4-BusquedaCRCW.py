@@ -1,4 +1,4 @@
-'''Programa 2: SUMA CREW
+'''Programa 4: Busqueda CRCW
 Estudiante: José Juan García Romero'''
 
 from concurrent.futures import process
