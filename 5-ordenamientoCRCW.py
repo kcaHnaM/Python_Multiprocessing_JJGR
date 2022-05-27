@@ -41,7 +41,7 @@ def ordeamiento(L):
         p1.run()
         p1.start()
         p1.join()
-        print("Revisar Proceso: ",p1.is_alive)
+        print("Revisar Proceso 1: ",p1.is_alive)
 
     processes = []
 
@@ -54,7 +54,7 @@ def ordeamiento(L):
             p2.start()
             k += 1
             p2.join()
-            print("Revisar Proceso: ",p2.is_alive)
+            print("Revisar Proceso 2: ",p2.is_alive)
     
     processes = []
 
@@ -66,10 +66,9 @@ def ordeamiento(L):
         p3.run()
         p3.start()
         p3.join()
-        print("Revisar Proceso: ",p3.is_alive)
+        print("Revisar Proceso 3: ",p3.is_alive)
 
-    print('\nOrdenamiento...\n')
-    print('Win: ',win,'\n')
+    print('\n\nOrdenamiento Win: ',win,"\n")
     print('Vector ordenado: ',L)
 
 def main():
@@ -80,7 +79,7 @@ def main():
     print('\tPrograma 5. ORDENAMIENTO CRCW\n')
     print_titulo()
 
-    print("Arreglo original: ", L)
+    print("Arreglo original: ", L,"\n")
     
     ordeamiento(L)
 
